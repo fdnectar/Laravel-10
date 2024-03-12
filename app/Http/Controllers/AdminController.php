@@ -8,21 +8,18 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
-    public function index()
-    {
+    public function index() {
         return view('admin.pages.index');
     }
 
-    public function AdminLogout(Request $request)
-    {
+    public function AdminLogout(Request $request) {
         Auth::guard('web')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/admin/login');
     }
 
-    public function AdminLogin()
-    {
+    public function AdminLogin() {
         return view('admin.pages.admin_login');
     }
 
