@@ -35,6 +35,7 @@
     <!-- Layout styles -->
     <link rel="stylesheet" href="{{ asset('backend/assets/css/demo2/style.css') }}">
     <!-- End layout styles -->
+    @stack('custom-styles')
 
     <link rel="shortcut icon" href="{{ asset('backend/assets/images/favicon.png') }}" />
 </head>
@@ -62,6 +63,9 @@
         </div>
     </div>
 
+    {{-- jquery --}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    {{-- end-jquery --}}
     <!-- core:js -->
     <script src="{{ asset('backend/assets/vendors/core/core.js') }}"></script>
     <!-- endinject -->
@@ -75,6 +79,8 @@
     <script src="{{ asset('backend/assets/vendors/feather-icons/feather.min.js') }}"></script>
     <script src="{{ asset('backend/assets/js/template.js') }}"></script>
     <!-- endinject -->
+
+    @stack('custom-scripts')
 
     <!-- Custom js for this page -->
     <script src="{{ asset('backend/assets/js/dashboard-dark.js') }}"></script>
