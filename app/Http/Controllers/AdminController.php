@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -41,12 +42,50 @@ class AdminController extends Controller
 
         if($request->file('photo')) {
             $file = $request->file('photo');
+            @unlink(public_path('images/admin_images/'.$data->photo));
             $fileName = date('YmdHi').$file->getClientOriginalName();
             $file->move(public_path('images/admin_images'), $fileName);
             $data->photo = $fileName;
         }
 
         $data->save();
-        return redirect()->back();
+
+        $showToaster = array(
+            'message' => 'Admin Profile Updated Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->back()->with($showToaster);
+    }
+
+    public function AdminChangePassword() {
+        $id = Auth::user()->id;
+        $profileData = User::find($id);
+        return view('admin.pages.change_password', compact('profileData'));
+    }
+
+    public function AdminUpdatePassword(Request $request) {
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required|confirmed'
+        ]);
+
+        if (!Hash::check($request->old_password, auth::user()->password)) {
+            $showToaster = array(
+                'message' => 'Old Password does not match',
+                'alert-type' => 'error'
+            );
+            return back()->with($showToaster);
+        }
+
+        User::whereId(auth()->user()->id)->update([
+            'password' => Hash::make($request->new_password)
+        ]);
+
+        $showToaster = array(
+            'message' => 'Password Changed Successfully',
+            'alert-type' => 'success'
+        );
+        return back()->with($showToaster);
     }
 }
