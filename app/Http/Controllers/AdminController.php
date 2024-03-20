@@ -95,4 +95,9 @@ class AdminController extends Controller
         $type = PropertyType::latest()->get();
         return view('admin.pages.all_type', compact('type'));
     }
+
+    public function AddType()
+    {
+        return view('admin.pages.add_type');
+    }
 }

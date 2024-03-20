@@ -47,6 +47,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::controller(AdminController::class)->group(function() {
         Route::get('/all/type', 'AllType')->name('all.type');
+        Route::get('/add/type', 'AddType')->name('add.type');
     });
 
 });
