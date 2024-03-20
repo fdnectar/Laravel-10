@@ -23,6 +23,8 @@
     <link rel="stylesheet" href="{{ asset('backend/assets/vendors/core/core.css') }}">
     <!-- endinject -->
 
+    <link rel="stylesheet" href="{{ asset('backend/assets/vendors/datatables.net-bs5/dataTables.bootstrap5.css') }}">
+
     <!-- Plugin css for this page -->
     <link rel="stylesheet" href="{{ asset('backend/assets/vendors/flatpickr/flatpickr.min.css') }}">
     <!-- End plugin css for this page -->
@@ -46,7 +48,7 @@
 
         <!-- partial:partials/_sidebar.html -->
 
-        @include('admin.inc.siderbar')
+        @include('admin.inc.sidebar')
         <!-- partial -->
 
         <div class="page-wrapper">
@@ -111,6 +113,10 @@
             }
         @endif
     </script>
+
+<script src="{{ asset('backend/assets/vendors/datatables.net/jquery.dataTables.js') }}"></script>
+<script src="{{ asset('backend/assets/vendors/datatables.net-bs5/dataTables.bootstrap5.js') }}"></script>
+<script src="{{ asset('backend/assets/js/data-table.js') }}"></script>
 
 </body>
 

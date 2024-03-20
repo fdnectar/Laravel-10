@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\PropertyType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -87,5 +88,11 @@ class AdminController extends Controller
             'alert-type' => 'success'
         );
         return back()->with($showToaster);
+    }
+
+    public function AllType()
+    {
+        $type = PropertyType::latest()->get();
+        return view('admin.pages.all_type', compact('type'));
     }
 }
