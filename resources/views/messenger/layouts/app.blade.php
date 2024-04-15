@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="/assets/css/spacing.css">
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/responsive.css">
+
 </head>
 
 <body>
@@ -41,6 +42,9 @@
 
     <!--main/custom js-->
     <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/messenger.js"></script>
+    @stack('custom-scripts')
+
 
 </body>
 

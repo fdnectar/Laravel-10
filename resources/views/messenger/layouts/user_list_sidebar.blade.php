@@ -15,35 +15,34 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <form action="#">
-
-                            <div class="file">
-                                <img src="/assets/images/upload_img.jpg" alt="Upload" class="img-fluid">
+                        <form action="#" class="profile-form">
+                            @csrf
+                            <div class="file" style="height: 150px !important; width: 150px !important; object-fit: cover !important;">
+                                <img src="{{ asset(auth()->user()->avator) }}" alt="Upload" class="img-fluid profile-image-preview" style="height: 130px !important; width: 130px !important; object-fit: cover !important;">
                                 <label for="select_file"><i class="fal fa-camera-alt"></i></label>
                                 <input id="select_file" type="file" hidden>
                             </div>
                             <p>Edit information</p>
-                            <input type="text" placeholder="Name">
-                            <input type="email" placeholder="Email">
-                            <input type="text" placeholder="Phone">
+                            <input type="text" placeholder="Name" value="{{ auth()->user()->name }}" name="name">
+                            <input type="email" placeholder="Email" value="{{ auth()->user()->email }}" name="email">
+                            <input type="text" placeholder="User Id" value="{{ auth()->user()->username }}" name="username">
                             <p>Change password</p>
-                            <div class="row">
+                            <div class="row mb-3">
                                 <div class="col-xl-6">
-                                    <input type="password" placeholder="Old Password">
+                                    <input type="password" placeholder="Current Password" name="current_password">
                                 </div>
                                 <div class="col-xl-6">
-                                    <input type="password" placeholder="New Password">
+                                    <input type="password" placeholder="New Password" name="password">
                                 </div>
                                 <div class="col-xl-12">
-                                    <input type="password" placeholder="Confirm Password">
+                                    <input type="password" placeholder="Confirm Password" name="password_confirmation">
                                 </div>
                             </div>
+                            <button type="button" class="btn btn-secondary cancel"
+                                    data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary save">Save changes</button>
+
                         </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary cancel"
-                            data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary save">Save changes</button>
                     </div>
                 </div>
             </div>
@@ -122,3 +121,16 @@
 
     </div>
 </div>
+
+@push('custom-scripts')
+
+<script>
+    $(document).ready(function() {
+        $('.profile-form').on('submit', function(e) {
+            e.preventDefault();
+            alert('working');
+        });
+    });
+</script>
+
+@endpush
