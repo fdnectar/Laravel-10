@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/assets/css/slick.css">
     <link rel="stylesheet" href="/assets/css/venobox.min.css">
     <link rel="stylesheet" href="/assets/css/emojionearea.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 
     <link rel="stylesheet" href="/assets/css/spacing.css">
     <link rel="stylesheet" href="/assets/css/style.css">
@@ -39,10 +40,17 @@
     <script src="/assets/js/slick.min.js"></script>
     <script src="/assets/js/venobox.min.js"></script>
     <script src="/assets/js/emojionearea.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
     <!--main/custom js-->
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/messenger.js"></script>
+    <script>
+        var notyf = new Notyf({
+            duration: 5000,
+        });
+    </script>
+
+
     @stack('custom-scripts')
 
 

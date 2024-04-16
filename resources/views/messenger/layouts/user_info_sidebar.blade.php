@@ -6,7 +6,7 @@
 
     <div class="wsus__chat_info_details">
         <div class="user_photo">
-            <img src="/assets/images/author_img_2.jpg" alt="User" class="img-fluid">
+            <img src="{{ asset(auth()->user()->avatar) }}" alt="User" class="img-fluid">
         </div>
         <h3 class="user_name">Hasan Masud</h3>
         <a href="#" class="delete_chat">Delete Conversation</a>
