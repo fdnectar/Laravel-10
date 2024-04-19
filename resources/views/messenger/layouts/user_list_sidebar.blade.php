@@ -40,7 +40,7 @@
                             </div>
                             <button type="button" class="btn btn-secondary cancel"
                                     data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary save">Save changes</button>
+                            <button type="submit" class="btn btn-primary save profile-save">Save changes</button>
                         </form>
                     </div>
                 </div>
@@ -48,24 +48,8 @@
         </div>
     </div>
 
-    <form action="#" class="wsus__user_list_search">
-        <input class="input" type="text" placeholder="Search">
-        <div class="user_search_result">
-            <div class="wsus__user_list_area_height">
-                <div class="wsus__user_list_item">
-                    <div class="img">
-                        <img src="/assets/images/author_img_1.jpg" alt="User" class="img-fluid">
-                        <span class="active"></span>
-                    </div>
-                    <div class="text">
-                        <h5>Jubaydul islam</h5>
-                        <p><span>You</span> Hi, What"s your name</p>
-                    </div>
-                    <span class="time">10m ago</span>
-                </div>
-            </div>
-        </div>
-    </form>
+    {{-- Search Bar --}}
+    @include('messenger.layouts.search')
 
     <div class="wsus__favourite_user">
         <div class="top">favourites</div>
@@ -128,6 +112,7 @@
         $('.profile-form').on('submit', function(e) {
             e.preventDefault();
             // notyf.success('Your changes have been successfully saved!');
+            let saveBtn = $('.profile-save');
             let formData = new FormData(this);
             $.ajax({
                 method: 'POST',
@@ -135,16 +120,23 @@
                 data: formData,
                 processData:false,
                 contentType:false,
+                beforeSend: function() {
+                    saveBtn.text('Saving...');
+                    saveBtn.prop("disabled", true);
+                },
                 success: function(data) {
                     window.location.reload();
                 },
                 error: function(xhr, status, error) {
-                    console.log(xhr);
+                    // console.log(xhr);
                     let errors = xhr.responseJSON.errors;
 
                     $.each(errors, function(index, value){
                         notyf.error(value[0]);
-                    })
+                    });
+
+                    saveBtn.text('Save Changes');
+                    saveBtn.prop("disabled", false);
                 }
             });
         });
