@@ -15,59 +15,41 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <form action="#">
-
-                            <div class="file">
-                                <img src="/assets/images/upload_img.jpg" alt="Upload" class="img-fluid">
+                        <form action="#" class="profile-form" enctype="multipart/form-data">
+                            @csrf
+                            <div class="file" style="height: 150px !important; width: 150px !important; object-fit: cover !important;">
+                                <img src="{{ asset(auth()->user()->avatar) }}" alt="Upload" class="img-fluid profile-image-preview" style="height: 130px !important; width: 130px !important; object-fit: cover !important;">
                                 <label for="select_file"><i class="fal fa-camera-alt"></i></label>
-                                <input id="select_file" type="file" hidden>
+                                <input id="select_file" type="file" hidden name="avator">
                             </div>
                             <p>Edit information</p>
-                            <input type="text" placeholder="Name">
-                            <input type="email" placeholder="Email">
-                            <input type="text" placeholder="Phone">
+                            <input type="text" placeholder="Name" value="{{ auth()->user()->name }}" name="name">
+                            <input type="email" placeholder="Email" value="{{ auth()->user()->email }}" name="email">
+                            <input type="text" placeholder="User Id" value="{{ auth()->user()->username }}" name="username">
                             <p>Change password</p>
-                            <div class="row">
+                            <div class="row mb-3">
                                 <div class="col-xl-6">
-                                    <input type="password" placeholder="Old Password">
+                                    <input type="password" placeholder="Current Password" name="current_password">
                                 </div>
                                 <div class="col-xl-6">
-                                    <input type="password" placeholder="New Password">
+                                    <input type="password" placeholder="New Password" name="password">
                                 </div>
                                 <div class="col-xl-12">
-                                    <input type="password" placeholder="Confirm Password">
+                                    <input type="password" placeholder="Confirm Password" name="password_confirmation">
                                 </div>
                             </div>
+                            <button type="button" class="btn btn-secondary cancel"
+                                    data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary save profile-save">Save changes</button>
                         </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary cancel"
-                            data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary save">Save changes</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <form action="#" class="wsus__user_list_search">
-        <input class="input" type="text" placeholder="Search">
-        <div class="user_search_result">
-            <div class="wsus__user_list_area_height">
-                <div class="wsus__user_list_item">
-                    <div class="img">
-                        <img src="/assets/images/author_img_1.jpg" alt="User" class="img-fluid">
-                        <span class="active"></span>
-                    </div>
-                    <div class="text">
-                        <h5>Jubaydul islam</h5>
-                        <p><span>You</span> Hi, What"s your name</p>
-                    </div>
-                    <span class="time">10m ago</span>
-                </div>
-            </div>
-        </div>
-    </form>
+    {{-- Search Bar --}}
+    @include('messenger.layouts.search')
 
     <div class="wsus__favourite_user">
         <div class="top">favourites</div>
@@ -122,3 +104,43 @@
 
     </div>
 </div>
+
+@push('custom-scripts')
+
+<script>
+    $(document).ready(function() {
+        $('.profile-form').on('submit', function(e) {
+            e.preventDefault();
+            // notyf.success('Your changes have been successfully saved!');
+            let saveBtn = $('.profile-save');
+            let formData = new FormData(this);
+            $.ajax({
+                method: 'POST',
+                url: '{{ route("profile.update") }}',
+                data: formData,
+                processData:false,
+                contentType:false,
+                beforeSend: function() {
+                    saveBtn.text('Saving...');
+                    saveBtn.prop("disabled", true);
+                },
+                success: function(data) {
+                    window.location.reload();
+                },
+                error: function(xhr, status, error) {
+                    // console.log(xhr);
+                    let errors = xhr.responseJSON.errors;
+
+                    $.each(errors, function(index, value){
+                        notyf.error(value[0]);
+                    });
+
+                    saveBtn.text('Save Changes');
+                    saveBtn.prop("disabled", false);
+                }
+            });
+        });
+    });
+</script>
+
+@endpush

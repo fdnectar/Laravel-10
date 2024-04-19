@@ -14,8 +14,8 @@
                 <span class="back_to_list">
                     <i class="fas fa-arrow-left"></i>
                 </span>
-                <img src="/assets/images/author_img_2.jpg" alt="User" class="img-fluid">
-                <h4>Jubaydul islam</h4>
+                <img src="{{ asset(auth()->user()->avatar) }}" alt="User" class="img-fluid">
+                <h4>{{ auth()->user()->name }}</h4>
             </div>
             <div class="header_right">
                 <a href="#" class="favourite"><i class="fas fa-star"></i></a>
