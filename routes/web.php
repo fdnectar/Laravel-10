@@ -65,6 +65,8 @@ Route::group(['middleware'=> 'auth'], function () {
 
     //search route
     Route::get('/messenger/search', [MessengerController::class, 'searchUser'])->name('messenger.search');
+    Route::get('/messenger/id-info', [MessengerController::class, 'fetchIdInfo'])->name('messenger.id-info');
+
 });
 
 

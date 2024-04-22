@@ -1,13 +1,38 @@
 /**
  *--------------------------
+    Global Variables
+ *--------------------------
+*/
+
+
+var temporaryMessageId = 0;
+
+const messageForm = $(".message-form"),
+      messageInput = $(".message-input"),
+      csrf_token = $("meta[name=csrf_token]").attr("content");
+
+const getMessengerId = () => $("meta[name=id]").attr("content");
+const setMessengerId = (id) => $("meta[name=id]").attr("content", id);
+
+
+
+/**
+ *--------------------------
     Reusable functions
  *--------------------------
 */
 
+function enableChatBoxLoader () {
+    $(".wsus__message_paceholder").removeClass('d-none')
+}
+
+function disableChatBoxLoader () {
+    $(".wsus__message_paceholder").addClass('d-none')
+}
+
 function imagePreview(input, selector){
     if(input.files && input.files[0]) {
         var render = new FileReader();
-
         render.onload = function(e) {
             $(selector).attr('src', e.target.result);
         }
@@ -90,6 +115,65 @@ function debounce(callback, delay) {
 
 /**
  *--------------------------
+    Fetch User on click and show it in a view
+ *--------------------------
+*/
+
+function idInfo(id) {
+    $.ajax({
+        method: 'GET',
+        url: '/messenger/id-info',
+        data: {id:id},
+        beforeSend: function() {
+            NProgress.start();
+            enableChatBoxLoader();
+        },
+        success: function(data) {
+            $(".messenger-user-details").find("img").attr("src", data.user.avatar);
+            $(".messenger-user-details").find("h4").text(data.user.name);
+
+            //sidebar details
+            $(".messenger-user-sidebar-details .user_photo").find("img").attr("src", data.user.avatar);
+            $(".messenger-user-sidebar-details").find(".user_name").text(data.user.name);
+            $(".messenger-user-sidebar-details").find(".user_unique_name").text(data.user.username);
+            NProgress.done();
+            disableChatBoxLoader();
+        },
+        error: function(xhr, status, error) {
+            disableChatBoxLoader();
+        }
+    });
+}
+
+/**
+ *--------------------------
+    Send Message
+ *--------------------------
+*/
+
+function sendMessage() {
+    temporaryMessageId += 1;
+    let tempId = `temp_${temporaryMessageId}`;
+    const inputValue = messageInput.val();
+    if(inputValue > 0) {
+        const formData = new FormData($(".message-form")[0]);
+        console.log(formData);
+        // $.ajax({
+        //     method: "POST",
+        //     url: '',
+        //     data: {_token: csrf_token},
+        //     success: function(data) {
+
+        //     },
+        //     error: function() {
+
+        //     }
+        // });
+    }
+}
+
+/**
+ *--------------------------
     On DOM Load
  *--------------------------
 */
@@ -118,5 +202,19 @@ $(document).ready(function() {
         let value = $('.search_user').val();
         searchUsers(value);
         // alert('working');
-    })
+    });
+
+    //click action on messenger list item
+
+    $("body").on("click", ".messenger-list-item", function() {
+        const dataId = $(this).attr("data-id");
+        setMessengerId(dataId);
+        idInfo(dataId);
+    });
+
+    //Message form
+    $(".message-form").on("submit", function(e) {
+        e.preventDefault();
+        sendMessage();
+    });
 });
