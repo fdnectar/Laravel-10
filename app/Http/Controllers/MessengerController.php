@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -41,5 +42,28 @@ class MessengerController extends Controller
         return response()->json([
             'user' => $user
         ]);
+    }
+
+    public function sendMessage(Request $request) {
+        $request->validate([
+            'message' => 'required',
+            'id' => 'required|integer',
+            'temporaryMsgId' => 'required'
+        ]);
+
+        $message = new Message();
+        $message->from_id = Auth::user()->id;
+        $message->to_id = $request->id;
+        $message->body = $request->message;
+        $message->save();
+
+        return response()->json([
+            'message' => $this->messageCard($message),
+            'tempID' => $request->temporaryMsgId
+        ]);
+    }
+
+    public function messageCard($message) {
+        return view('messenger.components.message-card', compact('message'))->render();
     }
 }

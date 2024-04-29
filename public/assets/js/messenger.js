@@ -9,6 +9,7 @@ var temporaryMessageId = 0;
 
 const messageForm = $(".message-form"),
       messageInput = $(".message-input"),
+      messageChatBoxContainer = $(".wsus__chat_area_body"),
       csrf_token = $("meta[name=csrf_token]").attr("content");
 
 const getMessengerId = () => $("meta[name=id]").attr("content");
@@ -155,21 +156,46 @@ function sendMessage() {
     temporaryMessageId += 1;
     let tempId = `temp_${temporaryMessageId}`;
     const inputValue = messageInput.val();
-    if(inputValue > 0) {
+    if(inputValue.length > 0) {
         const formData = new FormData($(".message-form")[0]);
+        formData.append("id", getMessengerId());
+        formData.append("temporaryMsgId", tempId);
+        formData.append("_token", csrf_token);
         console.log(formData);
-        // $.ajax({
-        //     method: "POST",
-        //     url: '',
-        //     data: {_token: csrf_token},
-        //     success: function(data) {
+        $.ajax({
+            method: "POST",
+            url: '/messenger/send-message',
+            data: formData,
+            dataType: "JSON",
+            processData: false,
+            contentType: false,
+            beforeSend: function() {
+                messageChatBoxContainer.append(sendTempMessageCard(inputValue, tempId)),
+                messageForm.trigger("reset"),
+                $(".emojionearea-editor").text("");
+            },
+            success: function(data) {
+                const tempMsgCardElement = messageChatBoxContainer.find(`.message-card[data-id=${data.tempID}]`);
+                tempMsgCardElement.before(data.message);
+                tempMsgCardElement.remove();
+            },
+            error: function() {
 
-        //     },
-        //     error: function() {
-
-        //     }
-        // });
+            }
+        });
     }
+}
+
+function sendTempMessageCard(message, tempId) {
+    return `
+        <div class="wsus__single_chat_area message-card" data-id="${tempId}">
+            <div class="wsus__single_chat chat_right">
+                <p class="messages">${message}</p>
+                <span class="clock"><i class="fas fa-clock"></i> 5h ago</span>
+                <a class="action" href="#"><i class="fas fa-trash"></i></a>
+            </div>
+        </div>
+    `
 }
 
 /**

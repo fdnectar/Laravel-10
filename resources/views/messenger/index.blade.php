@@ -63,8 +63,6 @@
                 </div>
             </div>
 
-
-
             <div class="wsus__single_chat_area">
                 <div class="wsus__single_chat chat_right">
                     <div class="pre_loader">
