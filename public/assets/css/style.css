@@ -627,6 +627,20 @@ button {
     z-index: 9999;
 }
 
+.wsus__message_paceholder_blank {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #ffff !important;
+    z-index: 9999;
+}
+
+.selecte_a_user {
+    padding: 10px;
+    border-radius: 6px;
+    background: var(--colorLightBg);;
+}
+
 .wsus__chat_area_header {
     display: flex;
     flex-wrap: wrap;

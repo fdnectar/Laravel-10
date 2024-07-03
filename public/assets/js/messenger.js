@@ -28,7 +28,9 @@ function enableChatBoxLoader () {
 }
 
 function disableChatBoxLoader () {
-    $(".wsus__message_paceholder").addClass('d-none')
+    $(".wsus__chat_app").removeClass('show_info');
+    $(".wsus__message_paceholder").addClass('d-none');
+    $(".wsus__message_paceholder_blank").addClass('d-none');
 }
 
 function imagePreview(input, selector){
